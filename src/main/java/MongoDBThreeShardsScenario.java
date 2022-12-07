@@ -1,27 +1,3 @@
-/*
- * CloudSim Plus: A modern, highly-extensible and easier-to-use Framework for
- * Modeling and Simulation of Cloud Computing Infrastructures and Services.
- * http://cloudsimplus.org
- *
- *     Copyright (C) 2015-2021 Universidade da Beira Interior (UBI, Portugal) and
- *     the Instituto Federal de Educação Ciência e Tecnologia do Tocantins (IFTO, Brazil).
- *
- *     This file is part of CloudSim Plus.
- *
- *     CloudSim Plus is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     CloudSim Plus is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with CloudSim Plus. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import ch.qos.logback.classic.Level;
 import org.cloudbus.cloudsim.allocationpolicies.VmAllocationPolicyBestFit;
 import org.cloudbus.cloudsim.brokers.DatacenterBroker;
@@ -47,6 +23,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * A three sharded MongoDB simulation example with three Host and VM, and many Cloudlets.
+ * Cloudlets are divided for the three available VMs, thus finish quicker than in the one shard scenario.
+ *
+ * By using the Event Listener, after the status change of the VM, the broker submits the
+ * rest of the unfinished Cloudlets until all are successfully completed.
+ *
+ * @author Emil Balitzki
+ */
 public class MongoDBThreeShardsScenario {
     private static final int HOSTS = 3;
     private static final int HOST_PES = 4;
@@ -60,9 +45,7 @@ public class MongoDBThreeShardsScenario {
 
     private final CloudSim simulation;
     private final DatacenterBroker broker0;
-    private List<Vm> vmList;
     private final List<Cloudlet> cloudletList;
-    private Datacenter datacenter0;
 
     public static void main(String[] args) {
         new MongoDBThreeShardsScenario();
@@ -70,13 +53,13 @@ public class MongoDBThreeShardsScenario {
 
     private MongoDBThreeShardsScenario() {
         simulation = new CloudSim();
-        datacenter0 = createDatacenter();
+        Datacenter datacenter0 = createDatacenter();
 
         //Creates a broker that is a software acting on behalf a cloud customer to manage his/her VMs and Cloudlets
         broker0 = new DatacenterBrokerBestFit(simulation);
         Log.setLevel(DatacenterBroker.LOGGER, Level.OFF);
 
-        vmList = createVms();
+        List<Vm> vmList = createVms();
         cloudletList = createCloudlets();
         broker0.submitVmList(vmList);
         broker0.submitCloudletList(cloudletList);

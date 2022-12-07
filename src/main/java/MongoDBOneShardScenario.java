@@ -23,15 +23,13 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * An example with just single Host and VM, and many Cloudlets
- * in order to simulate a waiting queue situation for the Cloudlets.
- *
+ * A single sharded MongoDB simulation example with just single Host and VM, and many Cloudlets.
  * With the limited resources of the single VM, Cloudlets are waiting for their turn.
+ *
  * By using the Event Listener, after the status change of the VM, the broker submits the
  * rest of the unfinished Cloudlets until all are successfully completed.
  *
  * @author Emil Balitzki
- * @since ClodSimPlus ---
  */
 public class MongoDBOneShardScenario {
     private static final int HOSTS = 1;
